@@ -18,16 +18,16 @@ class Project(models.Model):
         return self.name
 #Transaction model to track financial /resouces transactions within a project
 class Transaction(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='transactions')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     RESOURCE = 'resource'
     FINANCE = 'finance'
     TYPE_CHOICES = [
         (RESOURCE, 'Resource'),
-        (FINANCE, 'finance'),
+        (FINANCE, 'Finance'),
     ]
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=FINANCE)
 
