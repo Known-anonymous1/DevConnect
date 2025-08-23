@@ -1,7 +1,0 @@
-Summary Push Workflow (Typical Commands)
-powershell
-    git status
-    git add .
-    git commit -m "Your descriptive message"
-    git push
-
