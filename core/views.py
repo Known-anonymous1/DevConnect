@@ -29,4 +29,8 @@ class TransactionListCreateView(generics.ListCreateAPIView):
 #API for all users to view projects and transactions
 from rest_framework import generics, permissions
 from .models import Project, Transaction
-from .se
+from .serializers import ProjectSerializer, TransactionSerializer
+
+class ProjectListCreateView(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
