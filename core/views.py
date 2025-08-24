@@ -26,3 +26,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
     
+#API for all users to view projects and transactions
+from rest_framework import generics, permissions
+from .models import Project, Transaction
+from .se
