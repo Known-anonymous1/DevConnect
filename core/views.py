@@ -41,4 +41,8 @@ class ProjectListCreateView(generics.ListCreateAPIView):
 
 #New view for details, update, delete
 class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class TransactionListCreateView(
