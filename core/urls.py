@@ -22,3 +22,8 @@ from django.urls import path
 from .views import (
     ProjectListCreateView, ProjectRetrieveUpdateDestroyView,
     TransactionListCreateView, TransactionRetrieveUpdateDestroyView
+)
+
+urlpatterns = [
+    path('projects/', ProjectListCreateView.as_view(), name='project-list-create'),
+    
