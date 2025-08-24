@@ -55,4 +55,6 @@ class TransactionListCreateView(generics.ListCreateAPIView):
 #New view for details, update, delete
 
 class TransactionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]

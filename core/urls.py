@@ -17,3 +17,8 @@ urlpatterns = [
     path('projects/', TransactionListCreateView.as_view(), name='project-list-create'),
     path('transactions/', TransactionListCreateView.as_view(), name='transaction-list-create'),
 ]
+
+from django.urls import path
+from .views import (
+    ProjectListCreateView, ProjectRetrieveUpdateDestroyView,
+    TransactionListCreateView, TransactionRetrieveUpdateDestroyView
