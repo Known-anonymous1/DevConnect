@@ -25,11 +25,15 @@ class Transaction(models.Model):
 
     RESOURCE = 'resource'
     FINANCE = 'finance'
+    IN = "Income"
+    OUT = "Expense"
     TYPE_CHOICES = [
         (RESOURCE, 'Resource'),
         (FINANCE, 'Finance'),
+        (IN, "Income"),
+        (OUT, "Expense"),
     ]
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=FINANCE)
+    type = models.CharField(max_length=30, choices=TYPE_CHOICES, default=FINANCE)
 
     def __str__(self):
         return f"{self.type} | {self.description} | {self.amount}"
