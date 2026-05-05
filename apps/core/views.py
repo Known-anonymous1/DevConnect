@@ -1,6 +1,26 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Project, Transaction
-from .serializers import ProjectSerializer, TransactionSerializer
+from .serializers import (
+    ProjectSerializer,
+    TransactionSerializer,
+    RegisterSerializer,
+)
+
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(
+            {"message": f"Account created successfully. Welcome, {user.username}!"},
+            status=status.HTTP_201_CREATED
+        )
 
 
 class ProjectListCreateView(generics.ListCreateAPIView):
