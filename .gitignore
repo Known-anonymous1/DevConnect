@@ -1,13 +1,24 @@
+# Virtual environment
+venv/
+env/
+.env
+
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
 
 # Django
-db.sqlite3
 *.log
+db.sqlite3
+media/
+staticfiles/
 
-# Virtualenv
-.venv/
-
-# VS Code settings
+# VS Code
 .vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
