@@ -4,9 +4,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from threading import Timer, Lock
 
-# Configuration
-IGNORE_DIRS = {'.git', '__pycache__', '.venv', 'venv', 'node_modules'}
-BATCH_INTERVAL = 60  # seconds
+IGNORE_DIRS = {".git", "__pycache__", ".venv", "venv", "node_modules"}
+BATCH_INTERVAL = 60
 
 class GitAutoCommitHandler(FileSystemEventHandler):
     def __init__(self):
@@ -44,16 +43,13 @@ class GitAutoCommitHandler(FileSystemEventHandler):
                 subprocess.run(["git", "commit", "-m", message], check=True)
                 print("Committed successfully.")
                 confirm = input("Push to remote? (y/n): ").strip().lower()
-                if confirm == 'y':
+                if confirm == "y":
                     subprocess.run(["git", "push"], check=True)
                     print("Pushed to remote.")
                 else:
-                    print("Push skipped. Run 'git push' manually when ready.")
+                    print("Push skipped.")
             except subprocess.CalledProcessError as e:
-                if "nothing to commit" in str(e):
-                    print("No changes to commit.")
-                else:
-                    print(f"Git error: {e}")
+                print(f"Git error: {e}")
 
 if __name__ == "__main__":
     path = "."
