@@ -59,3 +59,41 @@ class TransactionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView
 
     def get_queryset(self):
         return Transaction.objects.filter(project__owner=self.request.user)
+
+
+import csv
+import json
+from django.http import HttpResponse
+
+class ProjectExportView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        projects = Project.objects.filter(owner=request.user)
+        export_format = request.query_params.get('format', 'csv')
+
+        if export_format == 'json':
+            data = list(projects.values(
+                'id', 'name', 'description', 'created_at', 'updated_at'
+            ))
+            response = HttpResponse(
+                json.dumps(data, indent=4, default=str),
+                content_type='application/json'
+            )
+            response['Content-Disposition'] = 'attachment; filename="projects.json"'
+            return response
+
+        # Default CSV
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="projects.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['ID', 'Name', 'Description', 'Created At', 'Updated At'])
+        for project in projects:
+            writer.writerow([
+                project.id,
+                project.name,
+                project.description,
+                project.created_at,
+                project.updated_at
+            ])
+        return response
