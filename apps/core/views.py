@@ -1,6 +1,8 @@
-from rest_framework import generics, permissions
+import csv
+import json
+from django.http import HttpResponse
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework import status
 from .models import Project, Transaction
 from .serializers import (
     ProjectSerializer,
@@ -61,10 +63,6 @@ class TransactionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView
         return Transaction.objects.filter(project__owner=self.request.user)
 
 
-import csv
-import json
-from django.http import HttpResponse
-
 class ProjectExportView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -83,7 +81,6 @@ class ProjectExportView(generics.GenericAPIView):
             response['Content-Disposition'] = 'attachment; filename="projects.json"'
             return response
 
-        # Default CSV
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="projects.csv"'
         writer = csv.writer(response)
