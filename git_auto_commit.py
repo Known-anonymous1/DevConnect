@@ -4,7 +4,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from threading import Timer, Lock
 
-IGNORE_DIRS = {".git", "__pycache__", ".venv", "venv", "node_modules"}
+IGNORE_DIRS = {'.git', '__pycache__', '.venv', 'venv', 'node_modules'}
 BATCH_INTERVAL = 60
 
 class GitAutoCommitHandler(FileSystemEventHandler):
@@ -35,21 +35,37 @@ class GitAutoCommitHandler(FileSystemEventHandler):
             files = list(self.changed_files)
             self.changed_files.clear()
             self.timer = None
-        if files:
-            print(f"Detected changes in {len(files)} files.")
-            try:
-                subprocess.run(["git", "add", "."], check=True)
-                message = f"Auto commit: changes in {len(files)} files"
-                subprocess.run(["git", "commit", "-m", message], check=True)
-                print("Committed successfully.")
-                confirm = input("Push to remote? (y/n): ").strip().lower()
-                if confirm == "y":
-                    subprocess.run(["git", "push"], check=True)
-                    print("Pushed to remote.")
-                else:
-                    print("Push skipped.")
-            except subprocess.CalledProcessError as e:
-                print(f"Git error: {e}")
+
+        if not files:
+            return
+
+        try:
+            # Check if there is actually anything to commit
+            result = subprocess.run(
+                ["git", "status", "--porcelain"],
+                capture_output=True,
+                text=True
+            )
+
+            if not result.stdout.strip():
+                print("No real changes to commit. Skipping.")
+                return
+
+            print(f"Detected real changes in {len(files)} files.")
+            subprocess.run(["git", "add", "."], check=True)
+            message = f"Auto commit: changes in {len(files)} files"
+            subprocess.run(["git", "commit", "-m", message], check=True)
+            print("Committed successfully.")
+
+            confirm = input("Push to remote? (y/n): ").strip().lower()
+            if confirm == 'y':
+                subprocess.run(["git", "push"], check=True)
+                print("Pushed to remote.")
+            else:
+                print("Push skipped. Run git push manually when ready.")
+
+        except subprocess.CalledProcessError as e:
+            print(f"Git error: {e}")
 
 if __name__ == "__main__":
     path = "."
