@@ -1,5 +1,4 @@
 from django.urls import path
-from django.http import HttpResponse
 from .views import (
     RegisterView,
     ProjectListCreateView,
@@ -9,12 +8,8 @@ from .views import (
     ProjectExportView,
 )
 
-def test_view(request):
-    return HttpResponse("Export URL is working!")
-
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
-    path('export-test/', test_view, name='export-test'),
     path('projects/export/', ProjectExportView.as_view(), name='project-export'),
     path('projects/', ProjectListCreateView.as_view(), name='project-list-create'),
     path('projects/<int:pk>/', ProjectRetrieveUpdateDestroyView.as_view(), name='project-detail'),

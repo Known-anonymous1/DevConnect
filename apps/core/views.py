@@ -2,6 +2,7 @@ import csv
 import json
 from django.http import HttpResponse
 from rest_framework import generics, permissions, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Project, Transaction
 from .serializers import (
@@ -63,7 +64,7 @@ class TransactionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView
         return Transaction.objects.filter(project__owner=self.request.user)
 
 
-class ProjectExportView(generics.GenericAPIView):
+class ProjectExportView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
