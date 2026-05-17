@@ -10,7 +10,7 @@ from .views import (
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
-    path('projects/export/', ProjectExportView.as_view(), name='project-export'),
+    path('export/projects/', ProjectExportView.as_view(), name='project-export'),
     path('projects/', ProjectListCreateView.as_view(), name='project-list-create'),
     path('projects/<int:pk>/', ProjectRetrieveUpdateDestroyView.as_view(), name='project-detail'),
     path('transactions/', TransactionListCreateView.as_view(), name='transaction-list-create'),
